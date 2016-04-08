@@ -2,23 +2,19 @@
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title></title>
-    <script type="text/javascript" src="../lib/jquery.js"></script>
+    <title>excel-grid</title>
     <script type="text/javascript" src="goods.js"></script>
-    <script type="text/javascript" src="../src/tl.win.js"></script>
-    <script type="text/javascript" src="../src/tl.grid.js"></script>
+    <script type="text/javascript" src="../lib/jquery.js"></script>
     <script type="text/javascript" src="../lib/inflate.js"></script>
     <script type="text/javascript" src="../lib/zip.js"></script>
+    <script type="text/javascript" src="../src/tl.win.js"></script>
+    <script type="text/javascript" src="../src/tl.grid.js"></script>
     <script type="text/javascript" src="../src/tl.import.js"></script>
     <link rel="stylesheet" type="text/css" href="../src/tl.win.css">
     <link rel="stylesheet" type="text/css" href="../src/tl.grid.css">
-    <style type="text/css">
-    #tab-test{
-    }
-    </style>
 </head>
 <body>
-<div id="tab-test"></div>
+    <div id="tab-test"></div>
 <script type="text/javascript">
     var data = {
         w       : 24,
@@ -123,7 +119,11 @@
         // data.row = [];
         tb = new Grid.Table('#tab-test', data, 0, 1000);
         tb.set_title('物品表');
+
+        // 导入xlsx的插件
         Grid.Plugins.enableImport(tb);
+        
+        // 保存
         tb.commit = function(d, f){
             console.table(d);
             f();
