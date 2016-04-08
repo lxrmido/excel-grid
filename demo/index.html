@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title></title>
+    <script type="text/javascript" src="../lib/jquery.js"></script>
+    <script type="text/javascript" src="goods.js"></script>
+    <script type="text/javascript" src="../src/tl.win.js"></script>
+    <script type="text/javascript" src="../src/tl.grid.js"></script>
+    <script type="text/javascript" src="../lib/inflate.js"></script>
+    <script type="text/javascript" src="../lib/zip.js"></script>
+    <script type="text/javascript" src="../src/tl.import.js"></script>
+    <link rel="stylesheet" type="text/css" href="../src/tl.win.css">
+    <link rel="stylesheet" type="text/css" href="../src/tl.grid.css">
+    <style type="text/css">
+    #tab-test{
+    }
+    </style>
+</head>
+<body>
+<div id="tab-test"></div>
+<script type="text/javascript">
+    var data = {
+        w       : 24,
+        h       : 48,
+        primary : 'goods_id',
+        col     : [
+            {
+                name    : 'goods_id',
+                display : '编号',
+                width   : 96
+            },
+            {
+                name    : 'goods_name',
+                display : '名称',
+                width   : 96,
+                color   : 'color'
+            },
+            {
+                name    : 'intro',
+                display : '描述',
+                width   : 256,
+                css     : function(){
+                    return 'font-size:12px;';
+                }
+            },
+            {
+                name    : 'color',
+                display : '颜色',
+                width   : 64,
+                replace : function(raw){
+                    var colors = ['白色', '绿色', '蓝色', '紫色', '橙色', '金色'];
+                    if(raw >= colors.length){
+                        return raw;
+                    }
+                    return colors[raw];
+                },
+                set     : function(raw){
+                    var i = parseInt(raw);
+                    return i || 0;
+                },
+                color   : 'color',
+                select  : [
+                    {
+                        value   : 0,
+                        display : '白色'
+                    },
+                    {
+                        value   : 1,
+                        display : '绿色'
+                    },
+                    {
+                        value   : 2,
+                        display : '蓝色'
+                    },
+                    {
+                        value   : 3,
+                        display : '紫色'
+                    },
+                    {
+                        value   : 4,
+                        display : '橙色'
+                    },
+                    {
+                        value   : 5,
+                        display : '金色'
+                    },
+                ]
+            },
+            {
+                name    : 'level',
+                display : '等级',
+                width   : 64
+            },
+            {
+                name    : 'bind',
+                display : '绑定',
+                width   : 64,
+                replace : function(raw){
+                    var binds = ['无', '使用后绑定', '已绑定'];
+                    if(raw >= binds.length){
+                        return raw;
+                    }
+                    return binds[raw];
+                }
+            },
+            {
+                name    : 'expire_time',
+                display : '有效期',
+                callback: function(tab, row, col){
+                    var time = tab.get_val(row, col);
+                    Win.calendar(time, '有效期', function(date){
+                        var t = Math.round(date.getTime() / 1000);
+                        tab.set_val(row, col, t);
+                    })
+                },
+                width   : 128
+            }
+        ]
+    };
+    $(document).ready(function(){
+        data.row = _goods;
+        // data.row = [];
+        tb = new Grid.Table('#tab-test', data, 0, 1000);
+        tb.set_title('物品表');
+        Grid.Plugins.enableImport(tb);
+        tb.commit = function(d, f){
+            console.table(d);
+            f();
+        }
+    });
+</script>
+</body>
+</html>
